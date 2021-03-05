@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../database');
-const Diagnostic = require('./Diagnostics');
+const Diagnostic = require('./Diagnostic');
 
 const Patient = sequelize.define('patient', {
     firstName: {
