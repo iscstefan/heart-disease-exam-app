@@ -1,16 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./database');
-const experiences = require('./routers/experiences-router');
+// const experiences = require('./routers/experiences-router');
 const users = require('./routers/user-router');
-const authRouter = require('./routers/auth-router');
 const cors = require('cors');
+const authRouter = require('./routers/auth-router')
 
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
 
-//pentru test
+//to be deleted
 app.get('/create', async (req, res, next) => {
     try {
         await sequelize.sync({ force: true });
@@ -20,15 +21,16 @@ app.get('/create', async (req, res, next) => {
     }
 });
 
-app.use(experiences);
+//app.use(experiences);
 app.use(users);
 app.use(authRouter);
 
+//error handling middleware
 app.use((err, req, res, next) => {
     console.warn(err);
 
     if (err.name === 'SequelizeValidationError') {
-        res.status(422).json({ message: 'invalid input' });
+        res.status(422).json({ message: 'validation error' });
     } else if (err.name === 'SequelizeUniqueConstraintError') {
         res.status(422).json({ message: 'input not unique' });
     } else {
