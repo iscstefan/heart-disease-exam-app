@@ -5,12 +5,8 @@ const router = express.Router();
 //users
 router.get('/users', userController.getUsers);
 
-router.post('/users', userController.addUser);
-
-
 //grant user access
 router.use('/users/:uid', userController.grantAccess);
-
 
 //router.put('/users/:uid', userController.updateUser);
 
@@ -18,12 +14,12 @@ router.use('/users/:uid', userController.grantAccess);
 
 
 //user's patients
-// router.get('/users/:uid/patients', userController.getPatients);
+router.get('/users/:uid/patients', userController.getPatients);
 
-// router.post('/users/:uid/patients', userController.addPatient);
+router.post('/users/:uid/patients', userController.addPatient);
 
-// router.delete('/users/:uid/patients/:pid', userController.deletePatient);
+router.delete('/users/:uid/patients/:pid', userController.deletePatient);
 
-// router.put('/users/:uid/patients/:pid', userController.updatePatient);
+router.put('/users/:uid/patients/:pid', userController.updatePatient);
 
 module.exports = router;

@@ -3,20 +3,43 @@ const sequelize = require('../database');
 const Diagnostic = require('./Diagnostic');
 
 const Patient = sequelize.define('patient', {
-    firstName: {
+    firstname: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            len: [0, 100]
+        }
     },
-    lastName: {
+    lastname: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            len: [0, 100]
+        }
     },
     email: {
         type: Sequelize.STRING,
+        validate: {
+            len: [0, 100]
+        }
     },
     telehpone: {
         type: Sequelize.STRING,
-        allowNull: false
+        validate: {
+            len: [0, 40]
+        }
+    },
+    address: {
+        type: Sequelize.STRING,
+        validate: {
+            len: [0, 200]
+        }
+    },
+    identification_number: {
+        type: Sequelize.STRING,
+        validate: {
+            len: [0, 50]
+        }
     },
     observations: {
         type: Sequelize.STRING,

@@ -17,6 +17,10 @@ passport.use(new GoogleStrategy({
             }
         });
 
+        console.log(accessToken)
+        console.log("sal")
+        console.log(refreshToken)
+
         if (!user) {
             user = new User();
 
