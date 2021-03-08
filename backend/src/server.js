@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./database');
-// const experiences = require('./routers/experiences-router');
 const users = require('./routers/user-router');
 const cors = require('cors');
 const authRouter = require('./routers/auth-router')
+const diagnosticRouter = require('./routers/diagnostic-router');
 
 const app = express();
 
@@ -24,6 +24,7 @@ app.get('/create', async (req, res, next) => {
 //app.use(experiences);
 app.use(users);
 app.use(authRouter);
+app.use(diagnosticRouter);
 
 //error handling middleware
 app.use((err, req, res, next) => {

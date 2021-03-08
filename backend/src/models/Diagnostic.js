@@ -43,7 +43,7 @@ const Diagnostic = sequelize.define('diagnostic', {
         allowNull: false,
         validate: {
             min:0,
-            max:1
+            max:2
         }
     },
     thalach: {
@@ -58,8 +58,12 @@ const Diagnostic = sequelize.define('diagnostic', {
             max:1
         }
     },
-    slope: {
+    oldpeak: {
         type: Sequelize.FLOAT,
+        allowNull: false
+    },
+    slope: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         validate: {
             min:0,
@@ -71,7 +75,7 @@ const Diagnostic = sequelize.define('diagnostic', {
         allowNull: false,
         validate: {
             min:0,
-            max:2
+            max:3
         }
     },
     thal: {
@@ -92,6 +96,5 @@ const Diagnostic = sequelize.define('diagnostic', {
     }
 
 });
-
 
 module.exports = Diagnostic;
