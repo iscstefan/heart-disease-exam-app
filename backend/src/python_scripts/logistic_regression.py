@@ -5,6 +5,7 @@ from sklearn.preprocessing import StandardScaler
 import pickle
 from sklearn.utils import shuffle
 import sys
+import os
 
 # nume_fisier = "heart.csv"
 # tabel = pd.read_csv(nume_fisier)
@@ -22,30 +23,33 @@ import sys
 # scaler = StandardScaler()
 # x_scaled = scaler.fit_transform(x_nonstd)
 
-#regresie logistica
+# regresie logistica
 # lr = LogisticRegression()
 # reg = lr.fit(x_scaled, y)
 
 # to_predict = scaler.transform(np.array([56,1,0,130,283,1,0,103,1,1.6,0,0,3]).reshape(1,-1))
 
 
-#denumiri fisiere import
-filename_model = 'logistic_regression_model.sav'
-filename_scaler = 'scaler.sav'
+# denumiri fisiere import
+filename_model = './python_scripts/logistic_regression_model.sav'
+filename_scaler = './python_scripts/scaler.sav'
 
-#serializare model si scaler
+# serializare model si scaler
 # pickle.dump(lr, open(filename_model, 'wb'))
 # pickle.dump(scaler, open(filename_scaler, 'wb'))
 
-#deserializare
+# deserializare
 loaded_model = pickle.load(open(filename_model, 'rb'))
 loaded_scaler = pickle.load(open(filename_scaler, 'rb'))
+
+# print(os.listdir('./python_scripts'))
 
 to_predict = []
 for i in range(13):
     to_predict.append(sys.argv[i + 1])
 
-predicted = loaded_scaler.transform(np.array(to_predict).reshape(1, -1))
+scaled_input = loaded_scaler.transform(np.array(to_predict).reshape(1, -1))
+predicted = loaded_model.predict(scaled_input)
 
 print(predicted)
 sys.stdout.flush()
