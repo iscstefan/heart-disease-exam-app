@@ -19,17 +19,28 @@ const runScript = function (features) {
 
 const addDiagnostic = async (req, res, next) => {
     try {
-        const diagnostic = Diagnostic.build(req.body);
+        if (Object.keys(req.body).length !== 13) {
+            res.status(400).json({ message: 'malformet request' })
+            return;
+        }
+
         const features = []
 
-        for(let prop in req.body) {
+        for (let prop in req.body) {
+            if (isNaN(req.body[prop])) {
+                res.status(400).json({ message: 'malformet request' })
+                return;
+            }
+
             features.push(req.body[prop])
         }
+
+        const diagnostic = Diagnostic.build(req.body);
 
         //pyhton script call
         diagnostic.prediction = await runScript(features)
         //output
-        console.warn({prediction: diagnostic.prediction})
+        console.warn({ prediction: diagnostic.prediction })
 
         await diagnostic.save();
 

@@ -22,4 +22,12 @@ router.delete('/users/:uid/patients/:pid', userController.deletePatient);
 
 router.put('/users/:uid/patients/:pid', userController.updatePatient);
 
+//patient's diagnostics
+router.get('/users/:uid/patients/:pid/diagnostics', userController.getDiagnostics);
+
+router.post('/users/:uid/patients/:pid/diagnostics', userController.addDiagnostic);
+
+router.delete('/users/:uid/patients/:pid/diagnostics/:did', userController.deleteDiagnostic);
+
+
 module.exports = router;
