@@ -11,3 +11,76 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.landing-image {
+  height: 100%;
+  width: 100%;
+}
+
+.landing-primary-text {
+  font-family: Roboto;
+  font-size: 51px;
+  font-weight: 1000;
+  color:#3b4db4;
+}
+
+.landing-secondary-text {
+  font-family: Roboto;
+  margin-top: 25px;
+  color:rgb(59, 59, 59);
+  /* font-weight: 100; */
+}
+
+.landing-auth-button {
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.p-menubar {
+  height: 100px;
+  font-weight: 500;
+  padding-left: 18vw;
+  padding-right: 120px;
+  font-weight: 500 !important;
+  color: blue !important;
+}
+
+.p-menuitem {
+  margin:0.2em;
+  font-weight: 500 !important;
+  color: blue !important;
+}
+
+.p-menuitem-text {
+  font-weight: 800;
+  font-size: 18px;
+  color: rgb(80, 80, 80) !important;
+}
+
+.p-menuitem :hover{
+  color:#3F51B5 !important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:not(.p-disabled):hover {
+  background: white;
+}
+
+.header-button {
+  font-size: 18px;
+}
+
+.p-button.p-button-text:enabled:active, .p-button.p-button-outlined:enabled:active {
+  background: white;
+}
+
+.p-button.p-button-text:enabled:focus, .p-button.p-button-outlined:enabled:focus {
+  background: white;
+}
+
+.p-button.p-button-text:enabled:hover {
+  background: white;
+}
+
+.p-menubar-button {
+
+}
