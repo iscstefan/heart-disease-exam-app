@@ -7,8 +7,6 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css'
 import './index.css';
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <App />

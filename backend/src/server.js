@@ -3,13 +3,18 @@ const bodyParser = require('body-parser');
 const sequelize = require('./database');
 const users = require('./routers/user-router');
 const cors = require('cors');
+var session = require('express-session');
+const cookieParser = require('cookie-parser');
+
 const authRouter = require('./routers/auth-router')
 const diagnosticRouter = require('./routers/diagnostic-router');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
+
+
 
 //to be deleted
 app.get('/create', async (req, res, next) => {
@@ -23,6 +28,7 @@ app.get('/create', async (req, res, next) => {
 
 //app.use(experiences);
 app.use(users);
+
 app.use(authRouter);
 app.use(diagnosticRouter);
 
