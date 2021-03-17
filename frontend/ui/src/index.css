@@ -21,7 +21,7 @@ code {
   font-family: Roboto;
   font-size: 51px;
   font-weight: 1000;
-  color:#3b4db4;
+  color:var(--primary-color)
 }
 
 .landing-secondary-text {
@@ -58,7 +58,7 @@ code {
 }
 
 .p-menuitem :hover{
-  color:#3F51B5 !important;
+  color:var(--primary-color) !important;
 }
 
 .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:not(.p-disabled):hover {
@@ -81,6 +81,16 @@ code {
   background: white;
 }
 
-.p-menubar-button {
+.p-menuitem-icon {
+  pointer-events: none;
+}
 
+.title-bar {
+  background-color: #223A66;
+  /* opacity: 0.8; */
+  color:white;
+  font-size: 40px;
+  font-weight: 550;
+  font-family: Roboto;
+  height: 200px;
 }

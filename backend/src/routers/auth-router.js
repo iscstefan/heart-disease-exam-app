@@ -85,7 +85,7 @@ authRouter.get('/checkauth', async (req, res, next) => {
 
 authRouter.get('/logout', function (req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect(process.env.client_url);
 });
 
 module.exports = authRouter;
