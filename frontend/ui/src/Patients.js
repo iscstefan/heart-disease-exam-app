@@ -8,13 +8,14 @@ import { TabView, TabPanel } from 'primereact/tabview';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import PatientStore from './PatientStore.js';
+import PatientDataTable from './PatientDataTable'
 
 /*
 TO DO:
--de pus intr-o componenta noua tabelul
 -buton adaugare
 -selectie
-
+-poate coloana result : pass/failed
+-de modificat telehpone in telephone in petient.js (backend)
 */
 
 class Patients extends React.Component {
@@ -49,15 +50,6 @@ class Patients extends React.Component {
     }
 
     render() {
-        const codeBodyTemplate = (rowData) => {
-            return (
-                <React.Fragment>
-                    <span className="p-column-title">Firstname</span>
-                    {rowData.firstname}
-                </React.Fragment>
-            );
-        }
-
         return (
             <div>
                 <CustomMenuBar user={this.props.user} />
@@ -70,18 +62,7 @@ class Patients extends React.Component {
                         <TabPanel header="Patients">
                             {
                                 this.state.patients.length > 0 &&
-                                <div style={{ width: '70vw' }} className={'datatable-responsive-demo'} >
-                                    <div className="card">
-                                        <DataTable value={this.state.patients} className={'p-datatable-responsive-demo p-mt-4'}
-                                            paginator={this.state.patients.length >= 10} rows={10} first={this.state.page} onPage={(e) => this.setState({ page: e.first })}
-                                            resizableColumns columnResizeMode="expand">
-                                            <Column field="firstname" header="Firstname" body={codeBodyTemplate}></Column>
-                                            <Column field="lastname" header="Lastname"></Column>
-                                            <Column field="email" header="Email" style={{width:'35%'}}></Column>
-                                            <Column field="identification_number" header="ID number"></Column>
-                                        </DataTable>
-                                    </div>
-                                </div>
+                                <PatientDataTable patients={this.state.patients} setPage={(page) => { this.setState({ page: page }) }} />
                             }
                         </TabPanel>
                         <TabPanel header="Graphs">
