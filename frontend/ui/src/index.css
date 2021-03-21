@@ -94,3 +94,13 @@ code {
   font-family: Roboto;
   height: 200px;
 }
+
+.add-patient-dialog {
+  width: 50vw;
+}
+
+@media screen and (max-width: 40em) {
+  .add-patient-dialog {
+    width: 80vw;
+  }
+}

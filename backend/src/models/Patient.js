@@ -7,14 +7,14 @@ const Patient = sequelize.define('patient', {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [0, 100]
+            len: [1, 100]
         }
     },
     lastname: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [0, 100]
+            len: [1, 100]
         }
     },
     email: {
@@ -23,10 +23,10 @@ const Patient = sequelize.define('patient', {
             len: [0, 100]
         }
     },
-    telehpone: {
+    telephone: {
         type: Sequelize.STRING,
         validate: {
-            len: [0, 40]
+            len: [0, 70]
         }
     },
     address: {

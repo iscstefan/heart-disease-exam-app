@@ -5,9 +5,9 @@ import { Column } from 'primereact/column';
 class CustomMenuBar extends React.Component {
     render() {
         return (
-            <div style={{ width: '70vw' }} className={'datatable-responsive-demo'} >
+            <div style={{ width: '70vw' }}>
                 <div className="card">
-                    <DataTable value={this.props.patients} className={'p-mt-4'} autoLayout
+                    <DataTable value={this.props.patients} className={'p-mt-5'} autoLayout
                         paginator={this.props.patients.length >= 10} rows={10} first={this.props.page} onPage={(e) => this.props.setPage(e.first)}
                         resizableColumns columnResizeMode="expand">
                         <Column field="firstname" header="Firstname"></Column>

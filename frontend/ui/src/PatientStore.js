@@ -34,6 +34,24 @@ class PatientStore {
             this.emitter.emit('GET_EXPERIENCES_FAILED');
         }
     }
+
+    async addPatient(patient) {
+        try {
+            await fetch(`${SERVER}/users/${this.user.id}/patients`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `${this.user.token}`
+                },
+                body: JSON.stringify(patient)
+            })
+
+            this.getPatients();
+        } catch (err) {
+            console.warn(err);
+            this.emitter.emit('ADD_PATIENT_ERROR');
+        }
+    }
 }
 
 export default PatientStore;

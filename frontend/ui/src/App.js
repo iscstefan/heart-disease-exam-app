@@ -1,8 +1,8 @@
 import React from 'react';
 import HomePage from './HomePage';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import Patients from './Patients'
-
+import Patients from './Patients';
+import PatientDetails from './PatientDetails';
 
 class App extends React.Component {
     constructor() {
@@ -29,6 +29,9 @@ class App extends React.Component {
                         </Route>
                         <Route path='/users/:uid/patients' exact={true}>
                             <Patients user={this.state.user}/>
+                        </Route>
+                        <Route path='/users/:uid/patients/add' exact={true}>
+                            <PatientDetails user={this.state.user}/>
                         </Route>
                         <Route>
                             <div>Not Found</div>
