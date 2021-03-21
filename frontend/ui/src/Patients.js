@@ -2,13 +2,10 @@ import React from 'react';
 import { Button } from 'primereact/button';
 import { withRouter } from 'react-router';
 import authStore from './AuthStore.js';
-import constants from './constants.js';
 import CustomMenuBar from './CustomMenuBar'
 import { TabView, TabPanel } from 'primereact/tabview';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import PatientStore from './PatientStore.js';
-import PatientDataTable from './PatientDataTable'
+import PatientDataTable from './PatientDataTable';
 
 /*
 TO DO:
@@ -60,6 +57,7 @@ class Patients extends React.Component {
                 <div>
                     <TabView className={'p-d-flex p-flex-column p-jc-center p-ai-center p-mt-4'}>
                         <TabPanel header="Patients">
+                        <Button label="Add Patient" className="p-ml-2 p-mb-2 p-button-lg p-button-secondary p-button-text" style={{fontWeight:900}} icon={'pi pi-plus'}/>
                             {
                                 this.state.patients.length > 0 &&
                                 <PatientDataTable patients={this.state.patients} setPage={(page) => { this.setState({ page: page }) }} />

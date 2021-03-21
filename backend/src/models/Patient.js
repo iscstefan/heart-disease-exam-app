@@ -23,7 +23,7 @@ const Patient = sequelize.define('patient', {
             len: [0, 100]
         }
     },
-    telephone: {
+    telehpone: {
         type: Sequelize.STRING,
         validate: {
             len: [0, 40]

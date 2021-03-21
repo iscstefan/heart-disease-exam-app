@@ -86,7 +86,7 @@ code {
 }
 
 .title-bar {
-  background-color: #223A66;
+  background-color: var(--primary-color);
   /* opacity: 0.8; */
   color:white;
   font-size: 40px;
