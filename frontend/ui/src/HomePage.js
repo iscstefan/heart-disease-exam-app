@@ -43,8 +43,8 @@ class HomePage extends React.Component {
                 <CustomMenuBar user={this.props.user} />
 
                 <div className="p-grid p-m-2 p-justify-center p-align-center">
-                    <div className='p-col-0 p-md-2  ' />
-                    <div className='p-col-0 p-md-3  '>
+                    <div className='p-col-0 p-md-2'/>
+                    <div className='p-col-0 p-md-3'>
                         <div className='landing-primary-text'>
                             Predict a Heart Disease
                         </div>

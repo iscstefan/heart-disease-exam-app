@@ -104,3 +104,7 @@ code {
     width: 80vw;
   }
 }
+
+.input-container .p-disabled{
+  opacity: 1;
+}

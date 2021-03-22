@@ -52,6 +52,24 @@ class PatientStore {
             this.emitter.emit('ADD_PATIENT_ERROR');
         }
     }
+
+    async updatePatient(patient) {
+        try {
+            await fetch(`${SERVER}/users/${this.user.id}/patients/${patient.id}`, {
+                method: 'put',
+                headers: {
+                    "Content-Type": 'application/json',
+                    "token": `${this.user.token}`
+                },
+                body: JSON.stringify(patient)
+            });
+
+            this.getPatients();
+        } catch (err) {
+            console.warn(err);
+            this.emitter.emit('UPDATE_PATIENT_ERROR')
+        }
+    }
 }
 
 export default PatientStore;

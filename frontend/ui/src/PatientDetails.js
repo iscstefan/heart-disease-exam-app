@@ -10,10 +10,12 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import classNames from 'classnames';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace';
+
 
 /*
 TO DO:
-media query ptr aliniere form la stanga
+posibil warning la label for...
 */
 
 class PatientDetails extends React.Component {
@@ -21,82 +23,138 @@ class PatientDetails extends React.Component {
         super(props);
 
         this.state = {
-            firstname: '',
-            lastname: '',
-            id_number: '',
-            email: '',
-            telephone: '',
-            observations: '',
-            submitted: true
+            patient: this.props.patient,
+            editingPatient: { firstname: 'lala' },
+            isEditing: false,
+            submitted: false
         }
 
         this.store = new PatientStore(this.props.user);
 
         this.handleChange = (ev) => {
+            const patient = this.state.editingPatient;
+            patient[ev.target.name] = ev.target.value
             this.setState({
-                [ev.target.name]: ev.target.value
+                editingPatient: patient
             })
+        }
+
+        this.setIsEditing = () => {
+            if (!this.state.isEditing) {
+                this.setState({ submitted: true, isEditing: true, editingPatient: Object.assign({}, this.state.patient) });
+            } else {
+                if (!this.state.editingPatient.firstname)
+                    return;
+                //salvam in bd
+                //salvam modificarea si local
+                this.setState({ submitted: false, isEditing: false, patient: this.state.editingPatient });
+                this.props.patientStore.updatePatient(this.state.editingPatient);
+            }
         }
     }
 
     componentDidMount() {
-        if (!authStore.user) {
-            this.props.history.push('/');
-        }
+        this.props.patientStore.emitter.addListener('UPDATE_PATIENT_ERROR', () => {
+            //TO DO
+        })
     }
 
     render() {
         return (
-            <div>
-                <CustomMenuBar user={this.props.user} />
-                <div className='title-bar p-d-flex p-flex-column p-jc-center p-ai-center p-flex-wrap'>
-                    {/* <img src={process.env.PUBLIC_URL + 'Doctor.svg'} className={'text-bar'} alt='' width={350}/> */}
-                    <span>Add a Patient</span>
+            <div className="p-grid p-m-1 p-justify-center p-align-center">
+                <div className='p-col-2' />
+                <div className='p-col-8'>
+                    <div style={{ height: '7vh' }} />
+                    <Button icon="pi pi-angle-left" className="p-button-rounded p-ml-3 p-button-outlined"
+                        onClick={() => this.props.setPatientDetailsEnabled(null)} />
+
+                    <div style={{ textAlign: 'right' }}>
+                        <span className="p-buttonset">
+                            <Button label={this.state.isEditing ? 'Save' : 'Edit'}
+                                onClick={this.setIsEditing}
+                                style={{ fontWeight: 900, fontSize: 18 }}
+                                className="p-button-text p-button-raised" />
+                            {this.state.isEditing &&
+                                <Button label='Cancel' onClick={() => { this.setState({ isEditing: false }) }}
+                                    className="p-button-text"
+                                    style={{ fontWeight: 900, fontSize: 18 }} />
+                            }
+                        </span>
+                    </div>
+                    <div style={{ height: '4vh' }}></div>
+                    <div className='input-container'>
+                        <label for='firstname'> Firstname:</label>
+                        <Inplace className='p-mt-2 p-mb-3' id='firstname' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })}>
+                            <InplaceDisplay>
+                                <b style={{ fontSize: 23 }}>{this.state.patient.firstname}</b>
+                            </InplaceDisplay>
+                            <InplaceContent>
+                                <InputText id="firstname" name="firstname" keyfilter='alpha' value={this.state.editingPatient.firstname} onChange={this.handleChange} required className={classNames({ 'p-invalid': this.state.submitted && !this.state.editingPatient.firstname })} />
+                                {this.state.submitted && !this.state.editingPatient.firstname && <small className="p-error" style={{ display: 'block' }}>Firstname is required.</small>}
+                            </InplaceContent>
+                        </Inplace>
+                    </div>
+                    <div className='input-container'>
+                        <label for='lastname'> Lastname:</label>
+                        <Inplace className='p-mt-2 p-mb-3' id='lastname' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })}>
+                            <InplaceDisplay>
+                                <b style={{ fontSize: 23 }}>Stefan</b>
+                            </InplaceDisplay>
+                            <InplaceContent>
+                                <InputText />
+                            </InplaceContent>
+                        </Inplace>
+                    </div>
+                    <div className='input-container'>
+                        <label for='id_number'> ID number:</label>
+                        <Inplace className='p-mt-2 p-mb-3' id='id_number' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })}>
+                            <InplaceDisplay>
+                                <span style={{ fontSize: 17 }}>12312321321312</span>
+                            </InplaceDisplay>
+                            <InplaceContent>
+                                <InputText />
+                            </InplaceContent>
+                        </Inplace>
+                    </div>
+                    <div className='input-container'>
+                        <label for='telephone'> Telephone:</label>
+                        <Inplace className='p-mt-2 p-mb-3' id='telephone' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })}>
+                            <InplaceDisplay>
+                                <span style={{ fontSize: 17 }}>12312321321312</span>
+                            </InplaceDisplay>
+                            <InplaceContent>
+                                <InputText />
+                            </InplaceContent>
+                        </Inplace>
+                    </div>
+                    <div className='input-container'>
+                        <label for='email'> Email:</label>
+                        <Inplace className='p-mt-2 p-mb-3' id='email' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })}>
+                            <InplaceDisplay>
+                                <span style={{ fontSize: 17 }}>asdfsdafdas@asdas</span>
+                            </InplaceDisplay>
+                            <InplaceContent>
+                                <InputText />
+                            </InplaceContent>
+                        </Inplace>
+                    </div>
+                    <div className='input-container'>
+                        <label for='observations'> Email:</label>
+                        <Inplace className='p-mt-2 p-mb-3' id='observations' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })}>
+                            <InplaceDisplay>
+                                <span style={{ fontSize: 17 }}>asdfsdafdas@asdas</span>
+                            </InplaceDisplay>
+                            <InplaceContent>
+                                <InputText />
+                            </InplaceContent>
+                        </Inplace>
+                    </div>
+
+
                 </div>
-                <div className='p-formgrid p-d-flex p-flex-column p-jc-center p-ai-center p-mt-6 p-fluid' >
-                    <div className="p-field p-col-4 p-mr-2">
-                        <label htmlFor="firstname">Firstname:</label>
-                        <InputText id="firstname" name="firstname" keyfilter='alpha' value={this.state.firstname} onChange={this.handleChange} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.firstname })} />
-                        {this.state.submitted && !this.state.firstname && <small className="p-error">Firstname is required.</small>}
-                    </div>
-                    <div className="p-field p-col-4">
-                        <label htmlFor="lastname">Lastname:</label>
-                        <InputText id="lastname" name="lastname" keyfilter='alpha' value={this.state.lastname} onChange={this.handleChange} required
-                            className={classNames({ 'p-invalid': this.state.submitted && !this.state.lastname })} />
-                        {this.state.submitted && !this.state.lastname && <small className="p-error">Lastname is required.</small>}
-                    </div>
-                    <div className="p-field p-col-4">
-                        <label htmlFor="id_number">ID number:</label>
-                        <InputText id="id_number" name="id_number" value={this.state.id_number} onChange={this.handleChange} />
-                    </div>
-                    <div className="p-field p-col-4">
-                        <label htmlFor="email">Email:</label>
-                        <InputText id="email" name="email" value={this.state.email} onChange={this.handleChange} />
-                    </div>
-                    <div className="p-field p-col-4">
-                        <label htmlFor="telephone">Telephone:</label>
-                        <InputText id="telephone" name="telephone" value={this.state.telephone} onChange={this.handleChange} />
-                    </div>
-                    <div className="p-field p-col-4">
-                        <label htmlFor="observations">Observations:</label>
-                        <InputTextarea rows={6} id='observations' name='observations' value={this.state.observations} required onChange={this.handleChange} autoResize
-                            className={classNames({ 'p-invalid': this.state.submitted && this.state.observations.length > 500 })} />
-                        {this.state.submitted && this.state.observations.length > 500 && <small className="p-error">Number of characters must not exceed 500.</small>}
-                    </div>
-                
-                </div>
-                <div className='p-d-flex p-jc-center p-ai-center p-mt-2 p-mb-5'>
-                <Button label="Cancel"
-                                className="p-button-text"
-                                style={{ fontWeight: 900, fontSize: 'px'}}
-                                icon={'pi pi-times'}
-                                />
-                <Button label="Add Patient"
-                                className="p-button-text"
-                                style={{ fontWeight: 900, fontSize: '19px' }}
-                                icon={'pi pi-check'}
-                                />
-                </div>
+                <div className='p-col-2' />
+
+
             </div>
         )
     }

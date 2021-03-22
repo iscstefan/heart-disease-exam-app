@@ -30,9 +30,6 @@ class App extends React.Component {
                         <Route path='/users/:uid/patients' exact={true}>
                             <Patients user={this.state.user}/>
                         </Route>
-                        <Route path='/users/:uid/patients/add' exact={true}>
-                            <PatientDetails user={this.state.user}/>
-                        </Route>
                         <Route>
                             <div>Not Found</div>
                         </Route>

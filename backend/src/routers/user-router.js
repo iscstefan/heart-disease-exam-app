@@ -29,5 +29,4 @@ router.post('/users/:uid/patients/:pid/diagnostics', userController.addDiagnosti
 
 router.delete('/users/:uid/patients/:pid/diagnostics/:did', userController.deleteDiagnostic);
 
-
 module.exports = router;
