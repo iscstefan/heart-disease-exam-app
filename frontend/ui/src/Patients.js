@@ -11,9 +11,14 @@ import { InputText } from 'primereact/inputtext';
 import classNames from 'classnames';
 import { InputTextarea } from 'primereact/inputtextarea';
 import PatientDetails from './PatientDetails.js';
+import { Dropdown } from 'primereact/dropdown';
+import { Toast } from 'primereact/toast';
 
 /*
 TO DO:
+!!age,sex
+!!id_number = unique
+!! maxlength = 255 (in bd)
 -buton adaugare
 -selectie
 -poate coloana result : pass/failed
@@ -29,6 +34,8 @@ class Patients extends React.Component {
         this.emptyPatient = {
             firstname: '',
             lastname: '',
+            age: '',
+            sex: 'M',
             identification_number: '',
             email: '',
             telephone: '',
@@ -41,13 +48,24 @@ class Patients extends React.Component {
             patient: this.emptyPatient,
             submitted: false,
             isPatientDetailsEnabled: false,
-            selectedPatient: null
+            selectedPatient: null,
+            toast: React.createRef()
         }
 
         this.store = new PatientStore(this.props.user);
 
         this.showHideDialog = () => {
             if (!this.state.isDialogShown) {
+                this.emptyPatient = {
+                    firstname: '',
+                    lastname: '',
+                    age: '',
+                    sex: 'M',
+                    identification_number: '',
+                    email: '',
+                    telephone: '',
+                    observations: '',
+                }
                 this.setState({
                     patient: this.emptyPatient,
                     submitted: false
@@ -76,8 +94,13 @@ class Patients extends React.Component {
         }
 
         this.addPatient = () => {
-            this.store.addPatient(this.state.patient)
+            this.setState({ submitted: true });
+
+            if (this.state.patient.firstname && this.state.patient.lastname && this.state.patient.age) {
+                this.store.addPatient(this.state.patient);
+            }
         }
+
     }
 
     componentDidMount() {
@@ -93,12 +116,17 @@ class Patients extends React.Component {
             })
         });
 
+        this.store.emitter.addListener('ADD_PATIENT_SUCCESS', () => {
+            this.showHideDialog();
+        });
+
         this.store.emitter.addListener('UNAUTHORIZED', () => {
             this.props.history.push('/')
         });
 
         this.store.emitter.addListener('ADD_PATIENT_ERROR', () => {
-            console.log('error')
+            console.log('error!')
+            this.state.toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Patient could not be modified (ID number might not be unique)' });
         });
 
     }
@@ -112,8 +140,14 @@ class Patients extends React.Component {
             </React.Fragment>
         );
 
+        const dropDownValues = [
+            { label: 'Male', value: 'M' },
+            { label: 'Female', value: 'F' },
+        ]
+
         return (
             <div>
+                <Toast ref={this.state.toast} />
                 <CustomMenuBar user={this.props.user} />
                 <div className='title-bar p-d-flex p-flex-column p-jc-center p-ai-center'>
                     {/* <img src={process.env.PUBLIC_URL + 'Doctor.svg'} className={'text-bar'} alt='' width={350}/> */}
@@ -123,7 +157,7 @@ class Patients extends React.Component {
                     {this.state.isPatientDetailsEnabled
                         ?
                         <PatientDetails patient={this.state.selectedPatient} setPatientDetailsEnabled={this.setPatientDetailsEnabled}
-                        patientStore={this.store}/>
+                            patientStore={this.store} />
                         :
                         <div>
                             <TabView className={'p-d-flex p-flex-column p-jc-center p-ai-center p-mt-4'}>
@@ -150,6 +184,21 @@ class Patients extends React.Component {
                                                 className={classNames({ 'p-invalid': this.state.submitted && !this.state.patient.lastname })} />
                                             {this.state.submitted && !this.state.patient.lastname && <small className="p-error">Lastname is required.</small>}
                                         </div>
+                                        <div className="p-field ">
+                                            <label htmlFor="age">Age:</label>
+                                            <InputText id="age" name="age" keyfilter='pint' value={this.state.patient.age} onChange={this.handleChange} required
+                                                className={classNames({ 'p-invalid': this.state.submitted && !this.state.patient.age })} />
+                                            {this.state.submitted && !this.state.patient.age && <small className="p-error">Age is required.</small>}
+                                        </div>
+                                        <div className="p-field">
+                                            <label htmlFor="sex">Sex:</label>
+                                            <Dropdown value={this.state.patient.sex} options={dropDownValues}
+                                                onChange={(e) => this.setState(prevState => {
+                                                    let patient = { ...prevState.patient };
+                                                    patient.sex = e.value;
+                                                    return { patient }
+                                                })} placeholder="Male/Female" />
+                                        </div>
                                         <div className="p-field">
                                             <label htmlFor="identification_number">ID number:</label>
                                             <InputText id="identification_number" name="identification_number" value={this.state.patient.identification_number} onChange={this.handleChange} />
@@ -165,8 +214,8 @@ class Patients extends React.Component {
                                         <div className="p-field">
                                             <label htmlFor="observations">Observations:</label>
                                             <InputTextarea rows={6} id='observations' name='observations' value={this.state.patient.observations} required onChange={this.handleChange} autoResize
-                                                className={classNames({ 'p-invalid': this.state.submitted && this.state.patient.observations.length > 500 })} />
-                                            {this.state.submitted && this.state.patient.observations.length > 500 && <small className="p-error">Number of characters must not exceed 500.</small>}
+                                                className={classNames({ 'p-invalid': this.state.submitted && this.state.patient.observations.length > 255 })} />
+                                            {this.state.submitted && this.state.patient.observations.length > 255 && <small className="p-error">Number of characters must not exceed 255.</small>}
                                         </div>
                                     </Dialog>
                                 </TabPanel>

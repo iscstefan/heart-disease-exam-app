@@ -37,7 +37,10 @@ class PatientStore {
 
     async addPatient(patient) {
         try {
-            await fetch(`${SERVER}/users/${this.user.id}/patients`, {
+            if(patient.identification_number.trim().length === 0)
+                patient.identification_number = null
+
+            const response = await fetch(`${SERVER}/users/${this.user.id}/patients`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,8 +48,12 @@ class PatientStore {
                 },
                 body: JSON.stringify(patient)
             })
-
-            this.getPatients();
+            if (response.status === 201) {
+                this.getPatients();
+                this.emitter.emit('ADD_PATIENT_SUCCESS');
+            } else {
+                this.emitter.emit('ADD_PATIENT_ERROR');
+            }
         } catch (err) {
             console.warn(err);
             this.emitter.emit('ADD_PATIENT_ERROR');

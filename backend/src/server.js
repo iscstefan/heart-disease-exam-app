@@ -26,20 +26,17 @@ app.get('/create', async (req, res, next) => {
     }
 });
 
-//app.use(experiences);
 app.use(users);
-
 app.use(authRouter);
 app.use(diagnosticRouter);
 
-//error handling middleware
 app.use((err, req, res, next) => {
     console.warn(err);
 
     if (err.name === 'SequelizeValidationError') {
         res.status(422).json({ message: 'validation error' });
     } else if (err.name === 'SequelizeUniqueConstraintError') {
-        res.status(422).json({ message: 'input not unique' });
+        res.status(422).json({ message: 'unique constraint error' });
     } else {
         res.status(500).json({ message: 'server error' });
     }

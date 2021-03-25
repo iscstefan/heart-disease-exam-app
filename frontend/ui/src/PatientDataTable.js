@@ -34,6 +34,8 @@ class CustomMenuBar extends React.Component {
                         <Column body={actionBodyTemplate}></Column>
                         <Column field="firstname" header="Firstname" sortable></Column>
                         <Column field="lastname" header="Lastname" sortable></Column>
+                        <Column field="age" header="Age" sortable></Column>
+                        <Column field="sex" header="Sex" sortable></Column>
                         <Column field="identification_number" header="ID number"></Column>
                         <Column field="telephone" header="Telephone"></Column>
                         <Column field="email" header="Email"></Column>

@@ -73,7 +73,10 @@ const addPatient = async (req, res, next) => {
 const getPatients = async (req, res, next) => {
     try {
         const user = await User.findByPk(req.params.uid, {
-            include: [Patient]
+            include: [Patient],
+            order: [
+                [Patient, 'createdAt', 'DESC']
+            ]
         });
 
         if (user) {
