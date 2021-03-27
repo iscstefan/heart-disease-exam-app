@@ -185,7 +185,7 @@ const addDiagnostic = async (req, res, next) => {
                 diagnostic.patientId = patient.id;
                 await diagnostic.save();
 
-                res.status(201).json({ message: 'created' });
+                res.status(201).json({ prediction: diagnostic.prediction });
 
             } else {
                 res.status(404).json({ message: 'not found' });

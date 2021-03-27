@@ -7,6 +7,7 @@ class PatientStore {
         this.user = user;
         this.data = [];
         this.emitter = new EventEmitter();
+        this.diagnostic = '';
     }
 
     async getPatients() {
@@ -91,6 +92,32 @@ class PatientStore {
             this.getPatients();
         } catch (err) {
             console.warn(err);
+        }
+    }
+
+    async addDiagnostic(patientId, diagnostic) {
+        try {
+            diagnostic.sex = (diagnostic.sex === 'F') ? 0 : 1;
+            const response = await fetch(`${SERVER}/users/${this.user.id}/patients/${patientId}/diagnostics`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `${this.user.token}`
+                },
+                body: JSON.stringify(diagnostic)
+            })
+            if (response.status === 201) {
+                // this.getPredictions();
+                const data = await response.json();
+                console.log(data)
+                this.diagnostic = data.prediction;
+                this.emitter.emit('ADD_DIAGNOSTIC_SUCCESS');
+            } else {
+                this.emitter.emit('ADD_DIAGNOSTIC_ERROR');
+            }
+        } catch (err) {
+            console.warn(err);
+            this.emitter.emit('ADD_DIAGNOSTIC_ERROR');
         }
     }
 }

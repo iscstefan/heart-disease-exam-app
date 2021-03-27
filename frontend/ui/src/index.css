@@ -108,3 +108,17 @@ code {
 .input-container .p-disabled{
   opacity: 1;
 }
+
+@media screen and (max-width: 48em) {
+  .hide-photo {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 48em) {
+  .observations {
+    width: 35vw;
+    height: 30vh;
+  }
+}
+

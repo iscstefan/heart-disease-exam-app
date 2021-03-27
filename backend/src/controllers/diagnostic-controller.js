@@ -20,7 +20,7 @@ const runScript = function (features) {
 const addDiagnostic = async (req, res, next) => {
     try {
         if (Object.keys(req.body).length !== 13) {
-            res.status(400).json({ message: 'malformet request' })
+            res.status(400).json({ message: 'malformed request' })
             return;
         }
 
@@ -28,7 +28,7 @@ const addDiagnostic = async (req, res, next) => {
 
         for (let prop in req.body) {
             if (isNaN(req.body[prop])) {
-                res.status(400).json({ message: 'malformet request' })
+                res.status(400).json({ message: 'malformed request' })
                 return;
             }
 
@@ -44,7 +44,7 @@ const addDiagnostic = async (req, res, next) => {
 
         await diagnostic.save();
 
-        res.status(201).json({ message: 'created' });
+        res.status(201).json({ prediction: diagnostic.prediction });
     } catch (err) {
         if (err.name === 'py script error') {
             console.warn(err.message)
