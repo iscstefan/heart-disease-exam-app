@@ -101,7 +101,7 @@ code {
 
 @media screen and (max-width: 40em) {
   .add-patient-dialog {
-    width: 80vw;
+    width: 90vw;
   }
 }
 

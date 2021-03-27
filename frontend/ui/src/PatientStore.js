@@ -77,6 +77,22 @@ class PatientStore {
             this.emitter.emit('UPDATE_PATIENT_ERROR')
         }
     }
+
+    async deletePatient(id) {
+        try {
+            await fetch(`${SERVER}/users/${this.user.id}/patients/${id}`, {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': `${this.user.token}`
+                }
+            })
+
+            this.getPatients();
+        } catch (err) {
+            console.warn(err);
+        }
+    }
 }
 
 export default PatientStore;

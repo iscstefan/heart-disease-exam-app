@@ -16,6 +16,7 @@ import { Toast } from 'primereact/toast';
 
 /*
 TO DO:
+id_number null => warning
 !!age,sex
 !!id_number = unique
 !! maxlength = 255 (in bd)
@@ -66,6 +67,7 @@ class Patients extends React.Component {
                     telephone: '',
                     observations: '',
                 }
+                
                 this.setState({
                     patient: this.emptyPatient,
                     submitted: false

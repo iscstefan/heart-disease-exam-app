@@ -13,7 +13,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
-
+import { confirmDialog } from 'primereact/confirmdialog';
 
 class PatientDetails extends React.Component {
     constructor(props) {
@@ -22,12 +22,50 @@ class PatientDetails extends React.Component {
         this.state = {
             patient: this.props.patient,
             editingPatient: {},
+            diagnostic: {},
+            isDialogShown: false,
             isEditing: false,
             submitted: false,
+            isDiagnosticSubmitted: false,
             toast: React.createRef()
         }
 
-        this.store = new PatientStore(this.props.user);
+        this.showHideDialog = () => {
+            if (!this.state.isDialogShown) {
+                const emptyDiagnostic = {
+                    age: this.state.patient.age,
+                    sex: this.state.patient.sex,
+                    cp: '0',
+                    trestbps: '',
+                    chol: '',
+                    fbs: '0',
+                    restecg: '1',
+                    thalach: '',
+                    exang: '0',
+                    oldpeak: '',
+                    slope: '1',
+                    ca: '0',
+                    thal: '1'
+                }
+
+                this.setState({
+                    diagnostic: emptyDiagnostic,
+                    isDiagnosticSubmitted: false
+                })
+            }
+
+            this.setState({
+                isDialogShown: !this.state.isDialogShown
+            })
+        }
+
+        this.handleDiagnosticChange = (ev) => {
+            const diagnostic = this.state.diagnostic;
+            diagnostic[ev.target.name] = ev.target.value
+            this.setState({
+                diagnostic: diagnostic
+            })
+        }
 
         this.handleChange = (ev) => {
             const patient = this.state.editingPatient;
@@ -58,28 +96,100 @@ class PatientDetails extends React.Component {
     }
 
     render() {
+        const dialogFooter = (
+            <React.Fragment>
+                <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={this.showHideDialog} />
+                <Button label="Save" icon="pi pi-check" className="p-button-text" />
+            </React.Fragment>
+        );
+
         const dropDownValues = [
             { label: 'Male', value: 'M' },
             { label: 'Female', value: 'F' },
+        ];
+
+        const cpDropDownValues = [
+            { label: 'Asymptomatic', value: '0' },
+            { label: 'Atypical angina', value: '1' },
+            { label: 'Pain without relation to angina', value: '2' },
+            { label: 'Typical angina', value: '3' }
+        ];
+
+        const fbsDropDownValues = [
+            { label: 'Lower', value: '0' },
+            { label: 'Higher', value: '1' },
         ]
+
+        const exangDropDownValues = [
+            { label: 'No', value: '0' },
+            { label: 'Yes', value: '1' },
+        ]
+
+        const restecgDropDownValues = [
+            { label: 'Probable left ventricular hypertrophy', value: '0' },
+            { label: 'Normal', value: '1' },
+            { label: 'Abnormalities - T wave or ST segment', value: '2' },
+        ]
+
+        const slopeDropDownValues = [
+            { label: 'Descending', value: '0' },
+            { label: 'Flat', value: '1' },
+            { label: 'Ascending', value: '2' }
+        ]
+
+        const caDropDownValues = [
+            { label: '0', value: '0' },
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+            { label: '3', value: '3' }
+        ]
+
+        const thalDropDownValues = [
+            { label: 'Fixed defect', value: '1' },
+            { label: 'Normal blood flow', value: '2' },
+            { label: 'Reversible defect', value: '3' }
+        ]
+
+
+        const accept = () => {
+            this.props.patientStore.deletePatient(this.state.patient.id);
+            this.props.setPatientDetailsEnabled(null);
+        };
+
+        const confirmDeletion = () => {
+            confirmDialog({
+                message: 'Do you want to delete this patient?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-info-circle',
+                acceptClassName: 'p-button-danger',
+                baseZIndex: 1000,
+                accept
+            });
+        };
 
         return (
             <div className="p-grid p-m-1 p-justify-center p-align-center">
                 <Toast ref={this.state.toast} position="top-right" />
-                <div className='p-col-2' />
-                <div className='p-col-4'>
+                <div className='p-col-12 p-md-2' />
+                <div className='p-col-12 p-md-5'>
                     <div style={{ height: '7vh' }} />
                     <Button icon="pi pi-angle-left" className="p-button-rounded p-ml-3 p-button-outlined"
                         onClick={() => this.props.setPatientDetailsEnabled(null)} />
 
                     <div style={{ textAlign: 'right' }}>
-                        <span className="p-buttonset">
+                        <span >
+                            <Button label='Delete'
+                                onClick={confirmDeletion}
+                                style={{ fontWeight: 900, fontSize: 19 }}
+                                className="p-button-text"
+                                icon='pi pi-trash' />
                             <Button label={this.state.isEditing ? 'Save' : 'Edit'}
                                 onClick={this.setIsEditing}
                                 style={{ fontWeight: 900, fontSize: 19 }}
                                 className="p-button-text "
                                 icon={this.state.isEditing ? 'pi pi-check' : 'pi pi-pencil'} />
-                            {this.state.isEditing &&
+                            {
+                                this.state.isEditing &&
                                 <Button label='Cancel' onClick={() => { this.setState({ isEditing: false }) }}
                                     className="p-button-text"
                                     style={{ fontWeight: 900, fontSize: 19 }} />
@@ -183,7 +293,7 @@ class PatientDetails extends React.Component {
                                 </div>
                             </InplaceDisplay>
                             <InplaceContent >
-                                <InputTextarea readonly id='observations' name='observations' value={this.state.editingPatient.observations}
+                                <InputTextarea readOnly id='observations' name='observations' value={this.state.editingPatient.observations}
                                     required onChange={this.handleChange} autoResize
                                     rows={14}
                                     className={classNames({ 'p-invalid': this.state.submitted && this.state.editingPatient.observations.length > 255 })} />
@@ -194,9 +304,136 @@ class PatientDetails extends React.Component {
 
 
                 </div>
-                <div className='p-col-6' />
+                <div className='p-col-12 p-md-5'>
+                    <Button label='Predict a heart disease'
+                        className='p-button-lg p-button-secondary'
+                        onClick={this.showHideDialog}
+                        style={{ fontWeight: 900, fontSize: 24, padding: '18px' }} />
+                </div>
+
+                <Dialog header="Add a patient" footer={dialogFooter} visible={this.state.isDialogShown} className={'add-patient-dialog p-fluid'} onHide={this.showHideDialog}>
+                    <div className="p-field">
+                        <label htmlFor="ageDiag">Age:</label>
+                        <InputText id="ageDiag" name="age" keyfilter='pint' value={this.state.diagnostic.age} onChange={this.handleDiagnosticChange} required
+                            className={classNames({ 'p-invalid': this.state.isDiagnosticSubmitted && !this.state.diagnostic.age })} />
+                        {this.state.isDiagnosticSubmitted && !this.state.editingPatient.age && <small className="p-error">This field is required.</small>}
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="sexDiag">Sex:</label>
+                        <Dropdown id="sexDiag" value={this.state.diagnostic.sex} options={dropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.sex = e.value;
+                                return { diagnostic }
+                            })} placeholder="Male/Female" />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="cp">Chest pain type:</label>
+                        <Dropdown id="cp" value={this.state.diagnostic.cp} options={cpDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.cp = e.value;
+                                return { diagnostic }
+                            })} />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="trestbps">Trestbps:</label>
+                        <InputText id="trestbps" name="trestbps" keyfilter='pint' value={this.state.diagnostic.trestbps} onChange={this.handleDiagnosticChange} required
+                            className={classNames({ 'p-invalid': this.state.isDiagnosticSubmitted && !this.state.diagnostic.trestbps })}
+                            tooltip={'Resting blood pressure in millimeters of mercury (mm Hg) when the patient was admitted to the hospital.'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '25vw' } }} />
+                        {this.state.isDiagnosticSubmitted && !this.state.editingPatient.trestbps && <small className="p-error">This field is required.</small>}
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="chol">Cholesterol (mg/dl):</label>
+                        <InputText id="chol" name="chol" keyfilter='pint' value={this.state.diagnostic.chol} onChange={this.handleDiagnosticChange} required
+                            className={classNames({ 'p-invalid': this.state.isDiagnosticSubmitted && !this.state.diagnostic.chol })} />
+                        {this.state.isDiagnosticSubmitted && !this.state.editingPatient.chol && <small className="p-error">This field is required.</small>}
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="fbs">Fbs:</label>
+                        <Dropdown id="fbs" value={this.state.diagnostic.fbs} options={fbsDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.fbs = e.value;
+                                return { diagnostic }
+                            })}
+                            tooltip={'Whether the level of sugar in the blood is higher than 120 mg/dl or not.'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '25vw' } }} />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="restecg">Electrocardiogram on rest results:</label>
+                        <Dropdown id="restecg" value={this.state.diagnostic.restecg} options={restecgDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.restecg = e.value;
+                                return { diagnostic }
+                            })} />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="thalach">Maxium heart rate during the stress test:</label>
+                        <InputText id="thalach" name="thalach" keyfilter='pint' value={this.state.diagnostic.thalach} onChange={this.handleDiagnosticChange} required
+                            className={classNames({ 'p-invalid': this.state.isDiagnosticSubmitted && !this.state.diagnostic.age })} />
+                        {this.state.isDiagnosticSubmitted && !this.state.editingPatient.thalach && <small className="p-error">This field is required.</small>}
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="exang">Exercise angina:</label>
+                        <Dropdown id="exang" value={this.state.diagnostic.exang} options={exangDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.exang = e.value;
+                                return { diagnostic }
+                            })}
+                            tooltip={'Whether the patient had angina during exercise.'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '25vw' } }} />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="oldpeak">Oldpeak:</label>
+                        <InputText id="oldpeak" name="oldpeak" keyfilter='num' value={this.state.diagnostic.oldpeak} onChange={this.handleDiagnosticChange} required
+                            className={classNames({ 'p-invalid': this.state.isDiagnosticSubmitted && !this.state.diagnostic.oldpeak })}
+                            tooltip={'Decrease of the ST segment during exercise according to the same one on rest.'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '25vw' } }} />
+                        {this.state.isDiagnosticSubmitted && !this.state.editingPatient.oldpeak && <small className="p-error">This field is required.</small>}
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="slope">Slope of the ST segment:</label>
+                        <Dropdown id="slope" value={this.state.diagnostic.slope} options={slopeDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.slope = e.value;
+                                return { diagnostic }
+                            })}
+                            tooltip={'Slope of the ST segment during the most demanding part of the exercise.'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '25vw' } }} />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="ca">CA:</label>
+                        <Dropdown id="ca" value={this.state.diagnostic.ca} options={caDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.ca = e.value;
+                                return { diagnostic }
+                            })}
+                            tooltip={'Number of main blood vessels coloured by the radioactive dye.'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '25vw' } }} />
+                    </div>
+                    <div className="p-field">
+                        <label htmlFor="thal">Thal:</label>
+                        <Dropdown id="thal" value={this.state.diagnostic.thal} options={thalDropDownValues}
+                            onChange={(e) => this.setState(prevState => {
+                                let diagnostic = { ...prevState.diagnostic };
+                                diagnostic.thal = e.value;
+                                return { diagnostic }
+                            })}
+                            tooltip={'Results of the blood flow observed via the radioactive dye. Fixed defect - no blood flow in some part of the heart; Reversible defect - a blood flow is observed but it is not normal'}
+                            tooltipOptions={{ position: 'top', style: { maxWidth: '50vw' } }} />
+                    </div>
+                    <div className="p-field" style={{height: '10vh'}}>
+                        
+                    </div>
 
 
+                </Dialog>
             </div>
         )
     }

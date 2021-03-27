@@ -39,7 +39,6 @@ class CustomMenuBar extends React.Component {
                         <Column field="identification_number" header="ID number"></Column>
                         <Column field="telephone" header="Telephone"></Column>
                         <Column field="email" header="Email"></Column>
-
                     </DataTable>
                 </div>
             </div>
