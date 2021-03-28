@@ -13,6 +13,7 @@ import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import { confirmDialog } from 'primereact/confirmdialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 class PatientDetails extends React.Component {
     constructor(props) {
@@ -25,7 +26,9 @@ class PatientDetails extends React.Component {
             isDialogShown: false,
             isEditing: false,
             submitted: false,
+            isSubmittingDialog: true,
             isDiagnosticSubmitted: false,
+            prediction: '',
             toast: React.createRef()
         }
 
@@ -49,7 +52,9 @@ class PatientDetails extends React.Component {
 
                 this.setState({
                     diagnostic: emptyDiagnostic,
-                    isDiagnosticSubmitted: false
+                    isDiagnosticSubmitted: false,
+                    isSubmittingDialog: false,
+                    prediction: ''
                 })
             }
 
@@ -95,7 +100,9 @@ class PatientDetails extends React.Component {
                 && this.state.diagnostic.chol
                 && this.state.diagnostic.thalach
                 && this.state.diagnostic.oldpeak) {
-                this.props.patientStore.addDiagnostic(this.state.patient.id, this.state.diagnostic)
+
+                this.setState({ isSubmittingDialog: true });
+                this.props.patientStore.addDiagnostic(this.state.patient.id, this.state.diagnostic);
             }
 
         }
@@ -107,7 +114,7 @@ class PatientDetails extends React.Component {
         })
 
         this.props.patientStore.emitter.addListener('ADD_DIAGNOSTIC_SUCCESS', () => {
-            console.log("ASDASDASDASDASDASDASDA@@@@" + this.props.patientStore.diagnostic)
+            this.setState({ prediction: this.props.patientStore.diagnostic });
         })
 
         this.props.patientStore.emitter.addListener('ADD_DIAGNOSTIC_ERROR', () => {
@@ -196,9 +203,9 @@ class PatientDetails extends React.Component {
                         <Button icon="pi pi-angle-left" className="p-button-rounded p-ml-3 p-button-outlined"
                             onClick={() => this.props.setPatientDetailsEnabled(null)} />
                     </div>
-                    <div className="p-col-12 p-md-5">
+                    <div className="p-col-12 p-md-4" style={{ textAlign: 'center' }}>
                         <div>
-                            <span >
+                            <span>
                                 <Button label='Delete'
                                     onClick={confirmDeletion}
                                     style={{ fontWeight: 900, fontSize: 19 }}
@@ -218,6 +225,7 @@ class PatientDetails extends React.Component {
                             </span>
                         </div>
                     </div>
+                    <div className='p-col-12 p-md-1' />
                 </div>
                 <div className="p-grid p-m-1 p-justify-center p-align-center">
                     <Toast ref={this.state.toast} position="top-right" />
@@ -315,7 +323,7 @@ class PatientDetails extends React.Component {
                             <label htmlFor='observations'> Observations:</label>
                             <Inplace className='p-mt-2 p-mb-3' disabled active={this.state.isEditing} onToggle={(e) => this.setState({ isEditing: e.value })} >
                                 <InplaceDisplay>
-                                    <div style={{ wordBreak: 'break-all', width:'30vw' }}>
+                                    <div style={{ wordBreak: 'break-all', width: '30vw' }}>
                                         {this.state.patient.observations}
                                     </div>
                                 </InplaceDisplay>
@@ -337,13 +345,13 @@ class PatientDetails extends React.Component {
                             onClick={this.showHideDialog}
                             style={{
                                 fontWeight: 900, fontSize: 20, padding: '1em',
-                                marginTop: '2em'
+                                marginTop: '4em'
                             }} />
                         <div>
                             <img src={process.env.PUBLIC_URL + 'prediction.svg'} className={'landing-image hide-photo'} height={10} alt=''
-                            style={{
-                                marginTop: '4em'
-                            }} />
+                                style={{
+                                    marginTop: '5em'
+                                }} />
                         </div>
 
                     </div>
@@ -466,11 +474,36 @@ class PatientDetails extends React.Component {
                                 tooltip={'Results of the blood flow observed via the radioactive dye. Fixed defect - no blood flow in some part of the heart; Reversible defect - a blood flow is observed but it is not normal'}
                                 tooltipOptions={{ position: 'top', style: { maxWidth: '50vw' } }} />
                         </div>
-                        <div className="p-field" style={{ height: '10vh' }}>
 
-                        </div>
+                        {
+                            this.state.isSubmittingDialog
+                                ?
+                                <div className={'p-d-flex p-flex-jc-center p-ai-center'} style={{ height: '20vh' }}>
+                                    {
+                                        this.state.prediction
+                                            ?
+                                            <div className={'p-d-block p-mx-auto'} >
+                                                {
+                                                    this.state.prediction === 0
+                                                        ?
+                                                        <div style={{ color: '#cc0000', fontSize: '30px', fontWeight: 500 }}>
+                                                            Your patient is expected to suffer from a heart disease
+                                                        </div>
+                                                        :
+                                                        <div style={{ color: '#00802b', fontSize: '30px', fontWeight: 500 }}>
+                                                            Your patient is expected to be healthy
+                                                        </div>
 
-
+                                                }
+                                            </div>
+                                            :
+                                            <ProgressSpinner />
+                                    }
+                                </div>
+                                :
+                                <div className="p-field" style={{ height: '10vh' }}>
+                                </div>
+                        }
                     </Dialog>
                 </div>
             </div>
