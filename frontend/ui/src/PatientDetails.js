@@ -125,8 +125,17 @@ class PatientDetails extends React.Component {
     render() {
         const dialogFooter = (
             <React.Fragment>
-                <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={this.showHideDialog} />
-                <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={this.addDiagnostic} />
+                {
+                    this.state.isSubmittingDialog
+                        ?
+                        <Button label="Close" icon="pi pi-times" className="p-button-text" onClick={this.showHideDialog} />
+                        :
+                        <div>
+                            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={this.showHideDialog} />
+                            <Button label="Submit" icon="pi pi-check" className="p-button-text" onClick={this.addDiagnostic} />
+                        </div>
+                }
+
             </React.Fragment>
         );
 
@@ -282,7 +291,7 @@ class PatientDetails extends React.Component {
                                             let editingPatient = { ...prevState.editingPatient };
                                             editingPatient.sex = e.value;
                                             return { editingPatient }
-                                        })} placeholder="Male/Female" />
+                                        })} />
                                 </InplaceContent>
                             </Inplace>
                         </div>
@@ -371,7 +380,7 @@ class PatientDetails extends React.Component {
                                     let diagnostic = { ...prevState.diagnostic };
                                     diagnostic.sex = e.value;
                                     return { diagnostic }
-                                })} placeholder="Male/Female" />
+                                })} />
                         </div>
                         <div className="p-field">
                             <label htmlFor="cp">Chest pain type:</label>
@@ -478,13 +487,13 @@ class PatientDetails extends React.Component {
                         {
                             this.state.isSubmittingDialog
                                 ?
-                                <div className={'p-d-flex p-flex-jc-center p-ai-center'} style={{ height: '20vh' }}>
+                                <div className={'p-d-flex p-flex-jc-center p-ai-center'} style={{ height: '120px' }}>
                                     {
                                         this.state.prediction
                                             ?
                                             <div className={'p-d-block p-mx-auto'} >
                                                 {
-                                                    this.state.prediction === 0
+                                                    this.state.prediction === '0'
                                                         ?
                                                         <div style={{ color: '#cc0000', fontSize: '30px', fontWeight: 500 }}>
                                                             Your patient is expected to suffer from a heart disease

@@ -13,6 +13,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import PatientDetails from './PatientDetails.js';
 import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
+import DiagnosticDataTable from './DiagnosticDataTable.js';
 
 /*
 TO DO:
@@ -67,7 +68,7 @@ class Patients extends React.Component {
                     telephone: '',
                     observations: '',
                 }
-                
+
                 this.setState({
                     patient: this.emptyPatient,
                     submitted: false
@@ -112,7 +113,7 @@ class Patients extends React.Component {
 
         this.store.getPatients();
 
-        this.store.emitter.addListener('GET_EXPERIENCES_SUCCESS', () => {
+        this.store.emitter.addListener('GET_PATIENTS_SUCCESS', () => {
             this.setState({
                 patients: this.store.data
             })
@@ -221,9 +222,9 @@ class Patients extends React.Component {
                                         </div>
                                     </Dialog>
                                 </TabPanel>
-                                <TabPanel header="Graphs">
-                                    Content II
-                         </TabPanel>
+                                <TabPanel header="Predictions">
+                                    <DiagnosticDataTable user={this.props.user}/>
+                                </TabPanel>
                             </TabView>
                         </div>
                     }

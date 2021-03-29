@@ -96,7 +96,7 @@ code {
 }
 
 .add-patient-dialog {
-  width: 50vw;
+  width: 56vw;
 }
 
 @media screen and (max-width: 40em) {
@@ -122,3 +122,12 @@ code {
   }
 }
 
+.prediction-0 {
+  color:#cc0000;
+  font-weight: 700;
+}
+
+.prediction-1 {
+  color:#00802b;
+  font-weight: 700;
+}

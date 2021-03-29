@@ -23,11 +23,9 @@ class PatientStore {
             this.data = data;
 
             if (response.status === 200) {
-                this.emitter.emit('GET_EXPERIENCES_SUCCESS');
-            } else if (response.status === 401) {
-                this.emitter.emit('UNAUTHORIZED');
+                this.emitter.emit('GET_PATIENTS_SUCCESS');
             } else {
-                this.emitter.emit('GET_EXPERIENCES_FAILED');
+                this.emitter.emit('GET_PATIENTS_FAILED');
             }
 
         } catch (err) {
@@ -110,6 +108,8 @@ class PatientStore {
                 // this.getPredictions();
                 const data = await response.json();
                 console.log(data)
+                diagnostic.sex = (diagnostic.sex === 0) ? 'F' : 'M';
+                
                 this.diagnostic = data.prediction;
                 this.emitter.emit('ADD_DIAGNOSTIC_SUCCESS');
             } else {

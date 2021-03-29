@@ -12,6 +12,8 @@ router.use('/users/:uid', userController.grantAccess);
 
 //router.delete('/users/:uid', userController.deleteUser);
 
+router.get('/users/:uid/diagnostics', userController.getUserDiagnostics);
+
 
 //user's patients
 router.get('/users/:uid/patients', userController.getPatients);
@@ -21,6 +23,8 @@ router.post('/users/:uid/patients', userController.addPatient);
 router.delete('/users/:uid/patients/:pid', userController.deletePatient);
 
 router.put('/users/:uid/patients/:pid', userController.updatePatient);
+
+
 
 //patient's diagnostics
 router.get('/users/:uid/patients/:pid/diagnostics', userController.getDiagnostics);

@@ -5,14 +5,6 @@ import { Button } from 'primereact/button';
 
 
 class CustomMenuBar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            page: 0
-        }
-    }
-
     render() {
 
         const actionBodyTemplate = (rowData) => {
@@ -30,8 +22,9 @@ class CustomMenuBar extends React.Component {
                     <DataTable value={this.props.patients} className={'p-mt-6'} autoLayout
                         paginator={this.props.patients.length >= 11} rows={10}
                         resizableColumns columnResizeMode="expand" removableSort
-                        selectionMode="single" dataKey="id">
+                        rowHover dataKey="id">
                         <Column body={actionBodyTemplate}></Column>
+                        <Column field="id" header="id" sortable></Column>
                         <Column field="firstname" header="Firstname" sortable></Column>
                         <Column field="lastname" header="Lastname" sortable></Column>
                         <Column field="age" header="Age" sortable></Column>

@@ -1,6 +1,7 @@
 const Patient = require('../models/Patient');
 const User = require('../models/User');
 const Diagnostic = require('../models/Diagnostic')
+const sequelize = require('../database.js');
 
 const runScript = function (features) {
     return new Promise(function (resolve, reject) {
@@ -231,6 +232,24 @@ const getDiagnostics = async (req, res, next) => {
     }
 }
 
+const getUserDiagnostics = async (req, res, next) => {
+    try {
+        const user = await User.findByPk(req.params.uid);
+
+        if (user) {
+            const [diagnostics] =
+                await sequelize.query(`select diagnostics.id, diagnostics.age, diagnostics.sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, prediction, patients.id as patientId from diagnostics join patients on patients.id = diagnostics.patientId where patients.userId = ${req.params.uid} `);
+            
+            res.status(200).json(diagnostics);
+            
+        } else {
+            res.status(404).json({ message: 'not found' });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 const deleteDiagnostic = async (req, res, next) => {
     try {
         const user = await User.findByPk(req.params.uid);
@@ -280,6 +299,7 @@ module.exports = {
     updatePatient,
     grantAccess,
     getDiagnostics,
+    getUserDiagnostics,
     addDiagnostic,
     deleteDiagnostic
 }
