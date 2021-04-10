@@ -506,7 +506,7 @@ class PatientDetails extends React.Component {
                                                 }
                                             </div>
                                             :
-                                            <ProgressSpinner />
+                                            <ProgressSpinner style={{marginTop: '10px'}}/>
                                     }
                                 </div>
                                 :

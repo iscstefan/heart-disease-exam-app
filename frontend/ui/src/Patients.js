@@ -14,6 +14,8 @@ import PatientDetails from './PatientDetails.js';
 import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import DiagnosticDataTable from './DiagnosticDataTable.js';
+import Graphs from './Graphs.js';
+import DiagnosticStore from './DiagnosticStore.js';
 
 /*
 TO DO:
@@ -103,7 +105,6 @@ class Patients extends React.Component {
                 this.store.addPatient(this.state.patient);
             }
         }
-
     }
 
     componentDidMount() {
@@ -131,11 +132,9 @@ class Patients extends React.Component {
             console.log('error!')
             this.state.toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Patient could not be modified (ID number might not be unique)' });
         });
-
     }
 
     render() {
-
         const dialogFooter = (
             <React.Fragment>
                 <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={this.showHideDialog} />
@@ -223,12 +222,16 @@ class Patients extends React.Component {
                                     </Dialog>
                                 </TabPanel>
                                 <TabPanel header="Predictions">
-                                    <DiagnosticDataTable user={this.props.user}/>
+                                    <DiagnosticDataTable user={this.props.user} />
+                                </TabPanel>
+                                <TabPanel header="Graphs">
+                                    <div style={{ width: '80vw' }}>
+                                        <Graphs store={new DiagnosticStore(this.props.user)}/>
+                                    </div>
                                 </TabPanel>
                             </TabView>
                         </div>
                     }
-
                 </div>
             </div>
         )

@@ -35,16 +35,20 @@ const addDiagnostic = async (req, res, next) => {
             features.push(req.body[prop])
         }
 
-        const diagnostic = Diagnostic.build(req.body);
+        console.log(features);
+
+        //!!!!!!!!!!!!!!!!
+        //Nu salvez in BD !!
+        // const diagnostic = Diagnostic.build(req.body);
 
         //pyhton script call
-        diagnostic.prediction = await runScript(features)
+        const prediction = await runScript(features)
         //output
-        console.warn({ prediction: diagnostic.prediction })
+        console.warn({ prediction: prediction })
 
-        await diagnostic.save();
+        // await diagnostic.save();
 
-        res.status(201).json({ prediction: diagnostic.prediction });
+        res.status(201).json({ prediction: prediction });
     } catch (err) {
         if (err.name === 'py script error') {
             console.warn(err.message)

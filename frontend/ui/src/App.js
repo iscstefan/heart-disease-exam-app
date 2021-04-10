@@ -3,6 +3,8 @@ import HomePage from './HomePage';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Patients from './Patients';
 import PatientDetails from './PatientDetails';
+import PredictPage from './PredictPage';
+import Graphs from './Graphs';
 
 class App extends React.Component {
     constructor() {
@@ -29,6 +31,12 @@ class App extends React.Component {
                         </Route>
                         <Route path='/users/:uid/patients' exact={true}>
                             <Patients user={this.state.user}/>
+                        </Route>
+                        <Route path='/predict' exact={true}>
+                            <PredictPage user={this.state.user}/>
+                        </Route>
+                        <Route path='/graphs' exact={true}>
+                            <Graphs/>
                         </Route>
                         <Route>
                             <div>Not Found</div>
