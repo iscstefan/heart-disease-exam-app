@@ -65,6 +65,7 @@ code {
   background: white;
 }
 
+
 .header-button {
   font-size: 18px;
 }
@@ -130,4 +131,9 @@ code {
 .prediction-1 {
   color:#00802b;
   font-weight: 700;
+}
+
+.custom-scrolltop {
+  width: 2.5rem;
+  height: 2.5rem;
 }

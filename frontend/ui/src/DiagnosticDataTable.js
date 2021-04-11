@@ -228,7 +228,7 @@ class DiagnosticDataTable extends React.Component {
                     Maxium heart rate during the stress test
                 </Tooltip>
                 <Tooltip target='.exang' position='top'>
-                    Exercise angina
+                    Angina during exercise
                 </Tooltip>
                 <Tooltip target='.oldpeak' position='top'>
                     Decrease of the ST segment during exercise according to the same one on rest
