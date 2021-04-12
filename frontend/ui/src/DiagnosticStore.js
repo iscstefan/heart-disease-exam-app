@@ -35,19 +35,18 @@ class DiagnosticStore {
 
     async predict(diagnostic) {
         try {
-            diagnostic.sex = (diagnostic.sex === 'F') ? 0 : 1;
+            const diagnosticCopy = Object.assign({}, diagnostic);
+            diagnosticCopy.sex = (diagnostic.sex === 'F') ? 0 : 1;
             const response = await fetch(`${SERVER}/diagnostics`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(diagnostic)
+                body: JSON.stringify(diagnosticCopy)
             })
             if (response.status === 201) {
                 const data = await response.json();
                 console.log(data)
-                diagnostic.sex = (diagnostic.sex === 0) ? 'F' : 'M';
-                
                 this.diagnostic = data.prediction;
                 this.emitter.emit('PREDICT_SUCCESS');
             } else {

@@ -5,6 +5,9 @@ import Patients from './Patients';
 import PatientDetails from './PatientDetails';
 import PredictPage from './PredictPage';
 import Graphs from './Graphs';
+import GraphsPage from './GraphsPage';
+import constants from './constants';
+
 
 class App extends React.Component {
     constructor() {
@@ -36,7 +39,7 @@ class App extends React.Component {
                             <PredictPage user={this.state.user}/>
                         </Route>
                         <Route path='/graphs' exact={true}>
-                            <Graphs/>
+                            <GraphsPage user={this.state.user} data={constants.diagnostics}/>
                         </Route>
                         <Route>
                             <div>Not Found</div>

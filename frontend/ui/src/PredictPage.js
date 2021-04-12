@@ -15,6 +15,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import DiagnosticStore from './DiagnosticStore.js';
+const Scroll = require('react-scroll');
 
 class PredictPage extends React.Component {
     constructor(props) {
@@ -79,11 +80,17 @@ class PredictPage extends React.Component {
                 && this.state.diagnostic.thalach
                 && this.state.diagnostic.oldpeak) {
 
+
                 this.setState({ isSubmittingDialog: true });
+
                 this.store.predict(this.state.diagnostic);
             }
 
         }
+
+
+
+
     }
 
     componentDidMount() {
@@ -159,6 +166,7 @@ class PredictPage extends React.Component {
             { label: 'Normal blood flow', value: '2' },
             { label: 'Reversible defect', value: '3' }
         ]
+
 
         return (
             <div>
@@ -317,7 +325,7 @@ class PredictPage extends React.Component {
                                             }
                                         </div>
                                         :
-                                        <ProgressSpinner style={{marginTop: '10px'}}/>
+                                        <ProgressSpinner style={{ marginTop: '10px' }} />
                                 }
                             </div>
                             :
@@ -331,4 +339,4 @@ class PredictPage extends React.Component {
     }
 }
 
-export default withRouter(PredictPage);
+export default PredictPage;

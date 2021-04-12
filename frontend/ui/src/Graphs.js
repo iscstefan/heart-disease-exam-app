@@ -20,6 +20,8 @@ class Graphs extends React.Component {
                     data: this.props.store.userDiagnostics
                 })
             });
+        } else if (this.props.data) {
+            this.setState({ data: this.props.data })
         }
     }
 
@@ -155,38 +157,49 @@ class Graphs extends React.Component {
         }
 
         const getNumericalData = (variable) => {
-            const healthy = new Map();
-            const diseased = new Map();
+            //aici!
+            let healthy = {}
+            let diseased = {}
 
             this.state.data.forEach(diagnostic => {
-                if (!healthy.has(diagnostic[`${variable}`])) {
-                    healthy.set(diagnostic[`${variable}`], 0);
-                    diseased.set(diagnostic[`${variable}`], 0);
+                if (!healthy[diagnostic[`${variable}`]]) {
+                    healthy[diagnostic[`${variable}`]] = 0;
+                    diseased[diagnostic[`${variable}`]] = 0;
+
                 }
 
                 diagnostic.prediction === 1
                     ?
-                    healthy.set(diagnostic[`${variable}`], healthy.get(diagnostic[`${variable}`]) + 1)
+                    healthy[diagnostic[`${variable}`]] += 1
                     :
-                    diseased.set(diagnostic[`${variable}`], diseased.get(diagnostic[`${variable}`]) + 1);
+                    diseased[diagnostic[`${variable}`]] += 1
+
             });
 
+            healthy = Object.keys(healthy).reduce((accumulator, currentValue) => {
+                accumulator[currentValue] = healthy[currentValue];
+                return accumulator;
+            }, {})
+
+            diseased = Object.keys(diseased).reduce((accumulator, currentValue) => {
+                accumulator[currentValue] = diseased[currentValue];
+                return accumulator;
+            }, {})
+
             return {
-                labels: Array.from(healthy.keys()).sort(function (a, b) {
-                    return a - b;
-                }),
+                labels: Object.keys(healthy),
                 datasets: [
                     {
                         type: 'bar',
                         label: 'Healthy',
                         backgroundColor: '#42A5F5',
-                        data: Array.from(healthy.values())
+                        data: Object.values(healthy)
                     },
                     {
                         type: 'bar',
                         label: 'Diseased',
                         backgroundColor: '#FFAEAE',
-                        data: Array.from(diseased.values())
+                        data: Object.values(diseased)
                     }
                 ]
             };
@@ -269,7 +282,7 @@ class Graphs extends React.Component {
                             "#42A5F5",
                             "#FFAEAE"
                         ],
-                        
+
                     }
                 ]
             }
@@ -277,64 +290,73 @@ class Graphs extends React.Component {
 
         return (
             <div className="card">
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="pie" data={getPieData()} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="bar" data={getNumericalData('age')} options={getOptions('Age')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="bar" data={getSexData()} options={getOptions('Sex')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="bar" data={getNumericalData('thalach')} options={getOptions('Max heart rate during stress test')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="bar" data={getNumericalData('chol')} options={getOptions('Cholesterol (mg/dl)')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="bar" data={getNumericalData('trestbps')} options={getOptions('Resting blood pressure (mmHg)')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <div style={{ fontSize: '2vh' }}>
-                        <p>
-                            1 - Probable left ventricular hypertrophy
-                        </p>
-                        <p>
-                            2 - Normal
-                        </p>
-                        <p>
-                            3 - Abnormalities - T wave or ST segment
-                        </p>
+                {
+                    this.state.data.length > 0 ?
+                        <div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="pie" data={getPieData()} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="bar" data={getNumericalData('age')} options={getOptions('Age')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="bar" data={getSexData()} options={getOptions('Sex')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="bar" data={getNumericalData('thalach')} options={getOptions('Max heart rate during stress test')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="bar" data={getNumericalData('chol')} options={getOptions('Cholesterol (mg/dl)')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="bar" data={getNumericalData('trestbps')} options={getOptions('Resting blood pressure (mmHg)')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <div style={{ fontSize: '2vh' }}>
+                                    <p>
+                                        1 - Probable left ventricular hypertrophy
+                                    </p>
+                                    <p>
+                                        2 - Normal
+                                    </p>
+                                    <p>
+                                        3 - Abnormalities - T wave or ST segment
+                                    </p>
+                                </div>
+                                <Chart type="bar" data={getRestecgData()} options={getOptions('Electrocardiogram on rest results')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <Chart type="bar" data={getExangData()} options={getOptions('Angina during exercise')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <p style={{ fontSize: '2vh' }}>Decrease of the ST segment during exercise according to the same one on rest</p>
+                                <Chart type="bar" data={getNumericalData('oldpeak')} options={getOptions('Decrease of the ST segment')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <div style={{ fontSize: '2vh' }}>
+                                    <p>
+                                        0 - Descending
+                                    </p>
+                                    <p>
+                                        1 - Flat
+                                    </p>
+                                    <p>
+                                        2 - Ascending
+                                    </p>
+                                </div>
+                                <Chart type="bar" data={getNumericalData('slope')} options={getOptions('Slope of the ST segment')} />
+                            </div>
+                            <div style={{ marginTop: '10vh' }}>
+                                <p style={{ fontSize: '2vh' }}>Number of main blood vessels coloured by the radioactive dye</p>
+                                <Chart type="bar" data={getNumericalData('ca')} options={getOptions('CA')} />
+                            </div>
+                            <ScrollTop className={'custom-scrolltop'} />
+                        </div>
+                        :
+                        <div>
+                            No prediction has been made.
                     </div>
-                    <Chart type="bar" data={getRestecgData()} options={getOptions('Electrocardiogram on rest results')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <Chart type="bar" data={getExangData()} options={getOptions('Angina during exercise')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <p style={{ fontSize: '2vh' }}>Decrease of the ST segment during exercise according to the same one on rest</p>
-                    <Chart type="bar" data={getNumericalData('oldpeak')} options={getOptions('Decrease of the ST segment')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <div style={{ fontSize: '2vh' }}>
-                        <p>
-                            0 - Descending
-                        </p>
-                        <p>
-                            1 - Flat
-                        </p>
-                        <p>
-                            2 - Ascending
-                        </p>
-                    </div>
-                    <Chart type="bar" data={getNumericalData('slope')} options={getOptions('Slope of the ST segment')} />
-                </div>
-                <div style={{ marginTop: '10vh' }}>
-                    <p style={{ fontSize: '2vh' }}>Number of main blood vessels coloured by the radioactive dye</p>
-                    <Chart type="bar" data={getNumericalData('ca')} options={getOptions('CA')} />
-                </div>
-                <ScrollTop className={'custom-scrolltop'} />
+                }
             </div>
         );
     }

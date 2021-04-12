@@ -8,12 +8,21 @@ class CustomMenuBar extends React.Component {
         const items = [
             {
                 label: 'Home',
+                command: (event) => {
+                    this.props.history.push(``);
+                }
             },
             {
                 label: 'Graphs',
+                command: (event) => {
+                    this.props.history.push(`/graphs`);
+                }
             },
             {
                 label: 'Predict',
+                command: (event) => {
+                    this.props.history.push(`/predict`);
+                }
             }
         ];
 
