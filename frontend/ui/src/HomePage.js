@@ -4,13 +4,11 @@ import { withRouter } from 'react-router';
 import authStore from './AuthStore.js';
 import constants from './constants.js';
 import CustomMenuBar from './CustomMenuBar';
-
+import { toggleWidget, Widget } from 'react-chat-widget';
+import 'react-chat-widget/lib/styles.css';
+import ChatBot from './ChatBot.js';
 
 class HomePage extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    // }
-
     componentDidMount() {
         if (!authStore.user) {
             authStore.checkAuth();
@@ -19,25 +17,13 @@ class HomePage extends React.Component {
         authStore.emitter.addListener('AUTH_SUCCESS', () => {
             console.log(authStore.user);
             this.props.setUserState(authStore.user);
-
-            //!de revizuit
-
-            // this.props.onLogin(loginStore.user);
-            // this.props.history.push('/')
         });
         authStore.emitter.addListener('AUTH_FAILED', () => {
-            //!de revizuit
-
-            // if (this.toast.current !== null)
-            //     this.toast.current.show({ severity: 'info', summary: 'Login Failed', detail: 'Invalid credentials', life: 3000 });
-            console.log("auth failed");
 
         });
     }
 
     render() {
-
-
         return (
             <div >
                 <CustomMenuBar user={this.props.user} />
@@ -53,7 +39,7 @@ class HomePage extends React.Component {
                         </div>
                         <Button
                             label="Sign in with Google"
-                            className="p-button-lg p-button-rounded landing-auth-button"
+                            className="p-button-secondary p-button-lg p-button-rounded landing-auth-button"
                             icon="pi pi-google"
                             onClick={() => {
                                 window.location.href = constants.server_url + "/auth/google";
@@ -64,7 +50,7 @@ class HomePage extends React.Component {
                     </div>
                     <div className='p-col-0 p-md-1  ' />
                 </div>
-
+                <ChatBot/>
             </div>
         )
     }

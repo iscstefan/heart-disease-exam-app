@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('./database');
+const sequelize = require('./config');
 const users = require('./routers/user-router');
 const cors = require('cors');
 var session = require('express-session');

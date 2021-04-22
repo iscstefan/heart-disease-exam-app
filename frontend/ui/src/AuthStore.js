@@ -10,23 +10,6 @@ class AuthStore {
         this.emitter = new EventEmitter();
     }
 
-    // async signIn() {
-    //     try {
-    //         const response = await fetch(`${SERVER}/auth/google/callback`, {
-    //             method: 'get',
-    //             credentials: 'include'
-    //         });
-
-    //         if (response.status !== 200) {
-    //             this.emitter.emit('AUTH_FAILED');
-    //         }
-
-    //     } catch (err) {
-    //         console.warn(err);
-    //         this.emitter.emit('AUTH_FAILED');
-    //     }
-    // }
-
     async checkAuth() {
         try {
             const response = await fetch(`${SERVER}/checkauth`, {
@@ -47,18 +30,6 @@ class AuthStore {
             this.emitter.emit('AUTH_FAILED');
         }
     }
-
-    // async logOut() {
-    //     try {
-    //         await fetch(`${SERVER}/logout`, {
-    //             method: 'get',
-    //             credentials: 'include'
-    //         });
-
-    //     } catch (err) {
-    //         this.emitter.emit('AUTH_FAILED');
-    //     }
-    // }
 }
 
 const authStore = new AuthStore();

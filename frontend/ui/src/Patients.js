@@ -17,20 +17,6 @@ import DiagnosticDataTable from './DiagnosticDataTable.js';
 import Graphs from './Graphs.js';
 import DiagnosticStore from './DiagnosticStore.js';
 
-/*
-TO DO:
-id_number null => warning
-!!age,sex
-!!id_number = unique
-!! maxlength = 255 (in bd)
--buton adaugare
--selectie
--poate coloana result : pass/failed
--de modificat telehpone in telephone in petient.js (backend)
-- progress bar -> cand se preia din BD
-- icon selectie la liniile tabelului
-*/
-
 class Patients extends React.Component {
     constructor(props) {
         super(props);
@@ -83,7 +69,6 @@ class Patients extends React.Component {
         }
 
         this.setPatientDetailsEnabled = (patient) => {
-            console.log(patient)
             this.setState({
                 selectedPatient: patient,
                 isPatientDetailsEnabled: !this.state.isPatientDetailsEnabled
@@ -129,7 +114,6 @@ class Patients extends React.Component {
         });
 
         this.store.emitter.addListener('ADD_PATIENT_ERROR', () => {
-            console.log('error!')
             this.state.toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Patient could not be modified (ID number might not be unique)' });
         });
     }
@@ -152,7 +136,6 @@ class Patients extends React.Component {
                 <Toast ref={this.state.toast} />
                 <CustomMenuBar user={this.props.user} />
                 <div className='title-bar p-d-flex p-flex-column p-jc-center p-ai-center'>
-                    {/* <img src={process.env.PUBLIC_URL + 'Doctor.svg'} className={'text-bar'} alt='' width={350}/> */}
                     <span>Your Patients</span>
                 </div>
                 <div>

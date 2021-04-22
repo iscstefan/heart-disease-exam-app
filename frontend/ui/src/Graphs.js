@@ -86,43 +86,6 @@ class Graphs extends React.Component {
             }
         }
 
-        // const getAgeData = () => {
-        //     const healthy = new Map();
-        //     const diseased = new Map();
-
-        //     this.state.data.forEach(diagnostic => {
-        //         if (!healthy.has(diagnostic.age)) {
-        //             healthy.set(diagnostic.age, 0);
-        //             diseased.set(diagnostic.age, 0);
-        //         }
-
-        //         diagnostic.prediction === 1
-        //             ?
-        //             healthy.set(diagnostic.age, healthy.get(diagnostic.age) + 1)
-        //             :
-        //             diseased.set(diagnostic.age, diseased.get(diagnostic.age) + 1);
-        //     });
-
-        //     return {
-        //         labels: Array.from(healthy.keys()),
-        //         datasets: [
-        //             {
-        //                 type: 'bar',
-        //                 label: 'Healthy',
-        //                 backgroundColor: '#42A5F5',
-        //                 data: Array.from(healthy.values())
-        //             },
-        //             {
-        //                 type: 'bar',
-        //                 label: 'Diseased',
-        //                 backgroundColor: '#FFAEAE',
-        //                 data: Array.from(diseased.values())
-        //             }
-        //         ]
-        //     };
-        // }
-        // //#3B80C4 #C47F3B
-
         const getRestecgData = () => {
             const restecgValue0 = [0, 0];
             const restecgValue1 = [0, 0];
@@ -157,7 +120,6 @@ class Graphs extends React.Component {
         }
 
         const getNumericalData = (variable) => {
-            //aici!
             let healthy = {}
             let diseased = {}
 
@@ -204,24 +166,6 @@ class Graphs extends React.Component {
                 ]
             };
         }
-
-        const basicData = {
-            labels: ['January', 'February'],
-            datasets: [
-                {
-                    type: 'bar',
-                    label: 'My First dataset',
-                    backgroundColor: '#42A5F5',
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                    type: 'bar',
-                    label: 'My Second dataset',
-                    backgroundColor: '#FFAEAE',
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                }
-            ]
-        };
 
         const getOptions = (xLabel) => {
             return {

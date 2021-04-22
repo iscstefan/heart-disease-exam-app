@@ -1,7 +1,7 @@
 const Patient = require('../models/Patient');
 const User = require('../models/User');
 const Diagnostic = require('../models/Diagnostic')
-const sequelize = require('../database.js');
+const sequelize = require('../config.js');
 
 const runScript = function (features) {
     return new Promise(function (resolve, reject) {

@@ -1,21 +1,13 @@
 import React from 'react';
 import { Button } from 'primereact/button';
-import { withRouter } from 'react-router';
-import authStore from './AuthStore.js';
 import CustomMenuBar from './CustomMenuBar'
-import { TabView, TabPanel } from 'primereact/tabview';
-import PatientDataTable from './PatientDataTable';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import classNames from 'classnames';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
-import { confirmDialog } from 'primereact/confirmdialog';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import DiagnosticStore from './DiagnosticStore.js';
-const Scroll = require('react-scroll');
 
 class PredictPage extends React.Component {
     constructor(props) {
@@ -172,18 +164,19 @@ class PredictPage extends React.Component {
             <div>
                 <Toast ref={this.state.toast} position="top-right" />
                 <CustomMenuBar user={this.props.user} />
-                <div className='title-bar p-d-flex p-flex-column p-jc-center p-ai-center'>
-                    {/* <img src={process.env.PUBLIC_URL + 'Doctor.svg'} className={'text-bar'} alt='' width={350}/> */}
-                    <span>Predict</span>
-                </div>
-                <div style={{ height: '10vh' }} />
-                <Button label='Predict a heart disease'
-                    className='p-button-lg p-button-secondary  p-d-block p-mx-auto'
-                    onClick={this.showHideDialog}
+                <div className='p-d-flex p-jc-center p-ai-center'
                     style={{
-                        fontWeight: 900, fontSize: 20, padding: '1em',
-                        marginTop: '4em'
-                    }} />
+                        height: '70vh'
+                        
+                    }}>
+                    <Button label='Predict a heart disease'
+                        className='p-button-rounded p-button-outlined p-button-secondary  p-d-block p-mx-auto'
+                        onClick={this.showHideDialog}
+                        style={{
+                            fontWeight: 900, fontSize: 20, padding: '1em',
+                        }} />
+                </div>
+
 
                 <Dialog header="Predict" footer={dialogFooter} visible={this.state.isDialogShown} className={'add-patient-dialog p-fluid'} onHide={this.showHideDialog}>
                     <div className="p-field">

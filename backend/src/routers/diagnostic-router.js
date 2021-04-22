@@ -7,4 +7,6 @@ router.get('/diagnostics', diagnosticController.getDiagnostics);
 
 router.post('/diagnostics', diagnosticController.addDiagnostic);
 
+router.post('/diagnostics/chatbot', diagnosticController.receiveAnswer);
+
 module.exports = router;

@@ -2,11 +2,11 @@ import React from 'react';
 import HomePage from './HomePage';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Patients from './Patients';
-import PatientDetails from './PatientDetails';
 import PredictPage from './PredictPage';
-import Graphs from './Graphs';
 import GraphsPage from './GraphsPage';
 import constants from './constants';
+import CovidPage from './CovidPage';
+import { addResponseMessage } from 'react-chat-widget';
 
 
 class App extends React.Component {
@@ -22,6 +22,10 @@ class App extends React.Component {
                 user: user
             })
         }
+    }
+
+    componentDidMount() {
+        addResponseMessage("Greetings. You can ask any questions regarding COVID-19.")
     }
 
     render() {
@@ -40,6 +44,9 @@ class App extends React.Component {
                         </Route>
                         <Route path='/graphs' exact={true}>
                             <GraphsPage user={this.state.user} data={constants.diagnostics}/>
+                        </Route>
+                        <Route path='/covid19' exact={true}>
+                            <CovidPage user={this.state.user}/>
                         </Route>
                         <Route>
                             <div>Not Found</div>

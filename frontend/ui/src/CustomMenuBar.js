@@ -2,6 +2,7 @@ import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { Button } from 'primereact/button';
 import { withRouter } from 'react-router';
+import { toggleWidget } from 'react-chat-widget';
 
 class CustomMenuBar extends React.Component {
     render() {
@@ -22,6 +23,15 @@ class CustomMenuBar extends React.Component {
                 label: 'Predict',
                 command: (event) => {
                     this.props.history.push(`/predict`);
+                }
+            },
+            {
+                label: 'COVID-19',
+                command: (event) => {
+                    
+                        toggleWidget();
+                    
+                    
                 }
             }
         ];

@@ -24,7 +24,7 @@ class CustomMenuBar extends React.Component {
                         resizableColumns columnResizeMode="expand" removableSort
                         rowHover dataKey="id">
                         <Column body={actionBodyTemplate}></Column>
-                        <Column field="id" header="id" sortable></Column>
+                        <Column field="id" header="Id" sortable></Column>
                         <Column field="firstname" header="Firstname" sortable></Column>
                         <Column field="lastname" header="Lastname" sortable></Column>
                         <Column field="age" header="Age" sortable></Column>

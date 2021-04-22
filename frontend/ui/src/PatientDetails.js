@@ -1,10 +1,5 @@
 import React from 'react';
 import { Button } from 'primereact/button';
-import { withRouter } from 'react-router';
-import authStore from './AuthStore.js';
-import CustomMenuBar from './CustomMenuBar'
-import { TabView, TabPanel } from 'primereact/tabview';
-import PatientDataTable from './PatientDataTable';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import classNames from 'classnames';
@@ -141,7 +136,7 @@ class PatientDetails extends React.Component {
 
         const dropDownValues = [
             { label: 'Male', value: 'M' },
-            { label: 'Female', value: 'F' },
+            { label: 'Female', value: 'F' }
         ];
 
         const cpDropDownValues = [
@@ -153,12 +148,12 @@ class PatientDetails extends React.Component {
 
         const fbsDropDownValues = [
             { label: 'Lower', value: '0' },
-            { label: 'Higher', value: '1' },
+            { label: 'Higher', value: '1' }
         ]
 
         const exangDropDownValues = [
             { label: 'No', value: '0' },
-            { label: 'Yes', value: '1' },
+            { label: 'Yes', value: '1' }
         ]
 
         const restecgDropDownValues = [
@@ -520,4 +515,4 @@ class PatientDetails extends React.Component {
     }
 }
 
-export default withRouter(PatientDetails);
+export default PatientDetails;

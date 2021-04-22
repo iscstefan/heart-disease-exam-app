@@ -6,11 +6,6 @@ import DiagnosticStore from './DiagnosticStore'
 import { Tooltip } from 'primereact/tooltip';
 import { confirmDialog } from 'primereact/confirmdialog';
 
-// tabview nou cu predictii pacienti...
-// coloane: id sex age chol trestbps ... predictie!
-// id e cel din baza de date (unic)
-
-
 class DiagnosticDataTable extends React.Component {
     constructor(props) {
         super(props);

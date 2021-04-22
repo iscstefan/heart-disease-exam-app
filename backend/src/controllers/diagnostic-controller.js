@@ -17,6 +17,48 @@ const runScript = function (features) {
     });
 }
 
+//chatbot
+const getAnswerFromChatBot = function (question) {
+    return new Promise(function (resolve, reject) {
+
+        const { spawn } = require('child_process');
+        const pyprog = spawn('python', ['./python_scripts/chatbot.py', question]);
+
+        pyprog.stdout.on('data', async function (data) {
+            console.warn()
+            const answer = data.toString();
+            resolve(answer.substring(0, answer.length - 2));
+        });
+
+        pyprog.stderr.on('data', (data) => {
+            reject({ name: 'py script error', message: data.toString() })
+        });
+    });
+}
+
+const receiveAnswer = async (req, res, next) => {
+    try {
+        if (!('question' in req.body)) {
+            res.status(400).json({ message: 'malformed request' })
+            return;
+        }
+
+        const answer = await getAnswerFromChatBot(req.body.question)
+        console.warn({ answer: answer })
+
+        res.status(201).json({ answer: answer });
+    } catch (err) {
+        if (err.name === 'py script error') {
+            console.warn(err.message)
+            res.status(500).json({ message: err.name });
+        }
+        else
+            next(err)
+    }
+}
+
+//chatbot
+
 const addDiagnostic = async (req, res, next) => {
     try {
         if (Object.keys(req.body).length !== 13) {
@@ -71,5 +113,6 @@ const getDiagnostics = async (req, res, next) => {
 
 module.exports = {
     addDiagnostic,
-    getDiagnostics
+    getDiagnostics,
+    receiveAnswer
 }
