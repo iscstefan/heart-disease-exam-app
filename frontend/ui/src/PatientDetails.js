@@ -352,7 +352,7 @@ class PatientDetails extends React.Component {
                                 marginTop: '4em'
                             }} />
                         <div>
-                            <img src={process.env.PUBLIC_URL + 'prediction.svg'} className={'landing-image hide-photo'} height={10} alt=''
+                            <img src={process.env.PUBLIC_URL + 'prediction2.svg'} className={'landing-image hide-photo'} height={10} alt=''
                                 style={{
                                     marginTop: '5em'
                                 }} />

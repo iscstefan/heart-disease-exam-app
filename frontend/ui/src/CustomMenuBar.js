@@ -25,15 +25,15 @@ class CustomMenuBar extends React.Component {
                     this.props.history.push(`/predict`);
                 }
             },
-            {
-                label: 'COVID-19',
-                command: (event) => {
+            // {
+            //     label: 'COVID-19',
+            //     command: (event) => {
                     
-                        toggleWidget();
+            //             toggleWidget();
                     
                     
-                }
-            }
+            //     }
+            // }
         ];
 
         let MenuBarEndButton = {};

@@ -122,9 +122,9 @@ class Graphs extends React.Component {
         const getNumericalData = (variable) => {
             let healthy = {}
             let diseased = {}
-
+            
             this.state.data.forEach(diagnostic => {
-                if (!healthy[diagnostic[`${variable}`]]) {
+                if (!(diagnostic[`${variable}`] in healthy)) {
                     healthy[diagnostic[`${variable}`]] = 0;
                     diseased[diagnostic[`${variable}`]] = 0;
 
@@ -135,8 +135,10 @@ class Graphs extends React.Component {
                     healthy[diagnostic[`${variable}`]] += 1
                     :
                     diseased[diagnostic[`${variable}`]] += 1
+            console.log(diseased)
 
             });
+
 
             healthy = Object.keys(healthy).reduce((accumulator, currentValue) => {
                 accumulator[currentValue] = healthy[currentValue];
@@ -147,7 +149,6 @@ class Graphs extends React.Component {
                 accumulator[currentValue] = diseased[currentValue];
                 return accumulator;
             }, {})
-
             return {
                 labels: Object.keys(healthy),
                 datasets: [
